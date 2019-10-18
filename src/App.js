@@ -1,26 +1,50 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {connect} from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// function App() {
+//   const [empArr, setEmpArr] = useState([]);
+//   return (
+    
+//   );
+// }
+function mapStateToPorps(state){
+  return state;
+}
+function mapDispatchToProps(dispatch){
+  return(
+    {updateState:(obj)=>{
+      dispatch({type:"ADDEMP", payload:obj})
+    }}
+  )
+}
+class App extends React.Component{
+  constructor(props){
+    super(props);
+    this.state ={empArr:[]};
+  }
+  addDataEventHandler =()=>{
+    this.props.updateState({empId:555, empName:"Gaurave"});
+  }
+  render(){
+    if(this.props.empArr){
+      var trArr = this.props.empArr.map((item)=>{
+        return(
+          <li key={item.empId}>{item.empId}---{item.empName}</li>
+        )
+      });
+    }
+   
+    return(
+    <div>
+      <h1>React redux example</h1>
+      <ul>
+        {trArr}
+      </ul>
+      <input type="button" value="Add data" onClick={this.addDataEventHandler}/>
+    </div>);
+  }
 }
 
-export default App;
+export default connect(mapStateToPorps, mapDispatchToProps)(App);
